@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+  <POU Name="StateMachine" Id="{11f3d975-8a9c-42f7-90c3-a017c227a81f}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK ABSTRACT StateMachine
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+	eStateMachine : E_StateMachine;
+END_VAR
+VAR
+	stStateMachine : ST_StateMachine;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[CASE eStateMachine OF
+
+	eInit:
+		Init();
+	eBusy:
+		Busy();
+	eIdle:
+		Idle();
+	eReady:
+		Ready();
+	eWaiting:
+		Waiting();
+	eError:
+		Error();
+		
+END_CASE]]></ST>
+    </Implementation>
+    <Method Name="Busy" Id="{b89fd49e-6e72-444b-a1c1-9076acdfc55f}">
+      <Declaration><![CDATA[METHOD ABSTRACT Busy : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="ChangeState" Id="{cacbdf26-de46-4210-84d6-77db883ad517}">
+      <Declaration><![CDATA[METHOD PRIVATE ChangeState : BOOL
+VAR_INPUT
+	eStateMachine : E_StateMachine;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[THIS^.eStateMachine := eStateMachine;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Error" Id="{a5919321-1ff0-46ee-ae01-6220d4cc812c}">
+      <Declaration><![CDATA[METHOD ABSTRACT Error : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Idle" Id="{5173a18e-95d9-4e4c-8494-dd70cd7612c7}">
+      <Declaration><![CDATA[METHOD ABSTRACT Idle : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Init" Id="{9e74f0af-aa5a-4fcb-aa76-2d2219c451fb}">
+      <Declaration><![CDATA[METHOD ABSTRACT Init : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Ready" Id="{1fb937da-5310-497e-877e-071145bd9b89}">
+      <Declaration><![CDATA[METHOD ABSTRACT Ready : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Waiting" Id="{0f01fbf9-d0ef-4dcc-8adf-961ac51a17ff}">
+      <Declaration><![CDATA[METHOD ABSTRACT Waiting : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="StateMachine">
+      <LineId Id="9" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="17" Count="0" />
+    </LineIds>
+    <LineIds Name="StateMachine.Busy">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="StateMachine.ChangeState">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="StateMachine.Error">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="StateMachine.Idle">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="StateMachine.Init">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="StateMachine.Ready">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="StateMachine.Waiting">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

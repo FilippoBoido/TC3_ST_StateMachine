@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+  <DUT Name="E_StateMachine" Id="{ef38db20-b737-42d4-8d2a-f9ddd1b5a742}">
+    <Declaration><![CDATA[TYPE E_StateMachine :
+(
+	eNoState := 0,
+	eInit, 		
+    eReady, 		
+    eBusy, 		
+    eWaiting, 	
+    eIdle, 		
+    eError 		
+);
+END_TYPE
+
+
+(*	
+
+				                   V  (bBoot)						
+								   |  									 
+                                   |
+								<Init>
+								   |
+								   |	
+                                   |  (bStart)
+                                   |
+                                   |
+								<Ready> --------<-----------------+---------<---------------+
+								   |                              |                         |
+                                   |                              |                         |
+                                   |  (bExecute)                  |                         |
+ 								   | 							  |							|
+                                   |                              |                         |
+                                   |                              |   (bReset)              |
+ 							   <Prepare>                          |                         |
+ 								   |                              |                         |
+                                   |                              |                         |
+                                   |                              |                         |
+                   (bWait)         |           (bError)           |                         |
+	 <Waiting> ---<-------->--- <Busy> ----------->----------- <Error>                      |
+				  (bEndWait)	   |                                                        |
+								   |	                                                    |
+                                   |                                                 		|
+                                   |                                                        |
+								   |  (bDone)												|
+								   |                                                        |
+								   |                                                        |
+								   |                                                        |
+								<Idle> ---------------------->------------------------------+
+								   
+								   
+Das erste Mal wo der FB aufgerufen wird, wird bBoot auf TRUE gesetzt und bleibt TRUE bis zum Neustart der Runtime.
+Das heißt Init() wird selbstständig vom FB im ersten Zyklus aufgerufen.
+Sobald bStart TRUE ist, wird Ready() ausgeführt.
+Ab diesem Stadium kann Init() nicht mehr aufgerufen werden.
+Durch Execute() wird der Zustand für ein Zyklus zu Prepare und dann zu Busy gewechselt.
+Von hier aus wird entweder durch einen Fehler in den Error oder durch ein Wait() in den Waiting Zustand gewechselt.
+Waiting kann nur zurück ins Busy und vom Error aus gehts nur nach Ready zurück.
+Wenn Busy fertig ist wird für ein Zyklus Idle und dann wieder Ready aufgerufen.
+							   
+*)                                 ]]></Declaration>
+  </DUT>
+</TcPlcObject>
