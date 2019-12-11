@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+  <DUT Name="E_TestUnitBusyStep" Id="{12327687-62f4-4c3d-8657-09447c218328}">
+    <Declaration><![CDATA[{attribute 'to_string'}
+TYPE E_TestUnitBusyStep :
+(
+	eNO_STEP := 0,
+	eWAITING_FOR_MATERIAL := 100
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

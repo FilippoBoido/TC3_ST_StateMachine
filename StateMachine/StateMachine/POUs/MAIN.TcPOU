@@ -3,14 +3,19 @@
   <POU Name="MAIN" Id="{d09ccafb-9881-4e93-b2ee-602c7b940cd3}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
-
+	fbTest : TestFB;
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[]]></ST>
+      <ST><![CDATA[fbTest();
+fbTest.Execute();
+
+]]></ST>
     </Implementation>
     <LineIds Name="MAIN">
       <LineId Id="2" Count="0" />
+      <LineId Id="8" Count="1" />
+      <LineId Id="7" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

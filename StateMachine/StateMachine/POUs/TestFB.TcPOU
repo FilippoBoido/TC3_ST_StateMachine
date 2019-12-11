@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
+  <POU Name="TestFB" Id="{67322c55-82fd-4877-8787-835d4a3a6dbc}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK TestFB EXTENDS StateMachine 
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+	eTestUnitBusyStep : E_TestUnitBusyStep;
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[SUPER^();
+eTestUnitBusyStep := stStateMachine.uiBusy;
+Start();]]></ST>
+    </Implementation>
+    <Method Name="Busy" Id="{ce67759b-1d29-4132-b761-f69e883f6603}">
+      <Declaration><![CDATA[METHOD PROTECTED Busy : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[stStateMachine.uiBusy := eWAITING_FOR_MATERIAL;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Error" Id="{1d1f7f1a-ccb8-4781-96bb-ad512df84a33}">
+      <Declaration><![CDATA[METHOD PROTECTED Error : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Idle" Id="{694ec343-3079-444c-b1a3-411c4b148a5a}">
+      <Declaration><![CDATA[METHOD PROTECTED Idle : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Init" Id="{f578fd0c-2eb8-497d-97cd-787e5f19f5d2}">
+      <Declaration><![CDATA[METHOD PROTECTED Init : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Prepare" Id="{e0e63be2-6199-4de5-b14f-7aa8426fa07f}">
+      <Declaration><![CDATA[METHOD PROTECTED Prepare : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Ready" Id="{a105b02e-d887-4cc7-83eb-9915747cdccb}">
+      <Declaration><![CDATA[METHOD PROTECTED Ready : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Waiting" Id="{46848366-d95a-4684-9298-4f89e58d7989}">
+      <Declaration><![CDATA[METHOD PROTECTED Waiting : BOOL
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="TestFB">
+      <LineId Id="10" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="TestFB.Busy">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="TestFB.Error">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="TestFB.Idle">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="TestFB.Init">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="TestFB.Prepare">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="TestFB.Ready">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+    <LineIds Name="TestFB.Waiting">
+      <LineId Id="4" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

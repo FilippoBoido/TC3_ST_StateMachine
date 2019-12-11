@@ -1,27 +1,38 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.0">
   <POU Name="StateMachine" Id="{11f3d975-8a9c-42f7-90c3-a017c227a81f}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK ABSTRACT StateMachine
+    <Declaration><![CDATA[FUNCTION_BLOCK ABSTRACT StateMachine 
 VAR_INPUT
 END_VAR
 VAR_OUTPUT
-	eStateMachine : E_StateMachine;
+	sStateMachine : STRING;
 END_VAR
 VAR
+	{attribute 'hide'} 
+	eStateMachine : E_StateMachine;
 	stStateMachine : ST_StateMachine;
+	bFirstCycle : BOOL := TRUE;
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[CASE eStateMachine OF
+      <ST><![CDATA[sStateMachine := TO_STRING(eStateMachine);
+
+Boot();
+
+CASE eStateMachine OF
 
 	eInit:
 		Init();
+	eReady:
+		Ready();
+	ePrepare:
+		Prepare();
+		eStateMachine := eBusy;
 	eBusy:
 		Busy();
 	eIdle:
 		Idle();
-	eReady:
-		Ready();
+		eStateMachine := eReady;
 	eWaiting:
 		Waiting();
 	eError:
@@ -29,8 +40,24 @@ END_VAR
 		
 END_CASE]]></ST>
     </Implementation>
-    <Method Name="Busy" Id="{b89fd49e-6e72-444b-a1c1-9076acdfc55f}">
-      <Declaration><![CDATA[METHOD ABSTRACT Busy : BOOL
+    <Folder Name="Orders" Id="{9191164b-845f-485d-8a94-853ab42d85ba}" />
+    <Folder Name="State" Id="{216e5a95-8ba0-4751-b893-a7c5d48a32b4}" />
+    <Method Name="Boot" Id="{752de0f2-d7a8-4119-aff0-0199bc482dc1}" FolderPath="Orders\">
+      <Declaration><![CDATA[METHOD PROTECTED Boot : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF bFirstCycle
+THEN
+	ChangeState(eInit);
+	bFirstCycle := FALSE;	
+	Boot := TRUE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Busy" Id="{b89fd49e-6e72-444b-a1c1-9076acdfc55f}" FolderPath="State\">
+      <Declaration><![CDATA[METHOD PROTECTED ABSTRACT  Busy : BOOL
 VAR_INPUT
 END_VAR
 ]]></Declaration>
@@ -48,8 +75,34 @@ END_VAR
         <ST><![CDATA[THIS^.eStateMachine := eStateMachine;]]></ST>
       </Implementation>
     </Method>
-    <Method Name="Error" Id="{a5919321-1ff0-46ee-ae01-6220d4cc812c}">
-      <Declaration><![CDATA[METHOD ABSTRACT Error : BOOL
+    <Method Name="Done" Id="{0603ae73-2603-4bdb-ad58-96bbbc3ca43a}" FolderPath="Orders\">
+      <Declaration><![CDATA[METHOD PROTECTED Done : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF eStateMachine = eBusy
+THEN
+	ChangeState(eIdle);
+	Done := TRUE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="EndWait" Id="{0a492e32-f521-4f88-8d5a-6a5fce24b66a}" FolderPath="Orders\">
+      <Declaration><![CDATA[METHOD PUBLIC EndWait : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF eStateMachine = eWaiting
+THEN
+	ChangeState(eBusy);
+	EndWait := TRUE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Error" Id="{a5919321-1ff0-46ee-ae01-6220d4cc812c}" FolderPath="State\">
+      <Declaration><![CDATA[METHOD PROTECTED ABSTRACT Error : BOOL
 VAR_INPUT
 END_VAR
 ]]></Declaration>
@@ -57,8 +110,34 @@ END_VAR
         <ST><![CDATA[]]></ST>
       </Implementation>
     </Method>
-    <Method Name="Idle" Id="{5173a18e-95d9-4e4c-8494-dd70cd7612c7}">
-      <Declaration><![CDATA[METHOD ABSTRACT Idle : BOOL
+    <Method Name="Execute" Id="{8c5ca484-96db-432c-ae75-36db197efe2c}" FolderPath="Orders\">
+      <Declaration><![CDATA[METHOD PUBLIC Execute : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF eStateMachine = eReady 
+THEN
+	ChangeState(ePrepare);
+	Execute := TRUE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Fault" Id="{cd4f19e4-39fe-42ef-b9d7-103957a7fe88}" FolderPath="Orders\">
+      <Declaration><![CDATA[METHOD PROTECTED Fault : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF eStateMachine = eBusy 
+THEN
+	ChangeState(eError);
+	Fault := TRUE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Idle" Id="{5173a18e-95d9-4e4c-8494-dd70cd7612c7}" FolderPath="State\">
+      <Declaration><![CDATA[METHOD PROTECTED ABSTRACT Idle : BOOL
 VAR_INPUT
 END_VAR
 ]]></Declaration>
@@ -66,8 +145,8 @@ END_VAR
         <ST><![CDATA[]]></ST>
       </Implementation>
     </Method>
-    <Method Name="Init" Id="{9e74f0af-aa5a-4fcb-aa76-2d2219c451fb}">
-      <Declaration><![CDATA[METHOD ABSTRACT Init : BOOL
+    <Method Name="Init" Id="{9e74f0af-aa5a-4fcb-aa76-2d2219c451fb}" FolderPath="State\">
+      <Declaration><![CDATA[METHOD PROTECTED ABSTRACT Init : BOOL
 VAR_INPUT
 END_VAR
 ]]></Declaration>
@@ -75,8 +154,8 @@ END_VAR
         <ST><![CDATA[]]></ST>
       </Implementation>
     </Method>
-    <Method Name="Ready" Id="{1fb937da-5310-497e-877e-071145bd9b89}">
-      <Declaration><![CDATA[METHOD ABSTRACT Ready : BOOL
+    <Method Name="Prepare" Id="{64d0f915-00a3-4359-804f-8d959a7918f2}" FolderPath="State\">
+      <Declaration><![CDATA[METHOD PROTECTED ABSTRACT Prepare : BOOL
 VAR_INPUT
 END_VAR
 ]]></Declaration>
@@ -84,8 +163,56 @@ END_VAR
         <ST><![CDATA[]]></ST>
       </Implementation>
     </Method>
-    <Method Name="Waiting" Id="{0f01fbf9-d0ef-4dcc-8adf-961ac51a17ff}">
-      <Declaration><![CDATA[METHOD ABSTRACT Waiting : BOOL
+    <Method Name="Ready" Id="{1fb937da-5310-497e-877e-071145bd9b89}" FolderPath="State\">
+      <Declaration><![CDATA[METHOD PROTECTED ABSTRACT Ready : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Reset" Id="{86d17323-2824-4c0d-9449-0316c50b84d0}" FolderPath="Orders\">
+      <Declaration><![CDATA[METHOD PUBLIC Reset : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF eStateMachine = eError 
+THEN
+	ChangeState(eReady);
+	Reset := TRUE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Start" Id="{32d21ce0-d594-4caa-a355-28645624b37c}" FolderPath="Orders\">
+      <Declaration><![CDATA[METHOD PROTECTED Start : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF eStateMachine = eInit 
+THEN
+	ChangeState(eReady);
+	Start := TRUE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Wait" Id="{ad294f02-1195-4f7c-ba85-de559dc4bae7}" FolderPath="Orders\">
+      <Declaration><![CDATA[METHOD PUBLIC Wait : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[IF eStateMachine = eBusy
+THEN
+	ChangeState(eWaiting);
+	Wait := TRUE;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="Waiting" Id="{0f01fbf9-d0ef-4dcc-8adf-961ac51a17ff}" FolderPath="State\">
+      <Declaration><![CDATA[METHOD PROTECTED ABSTRACT Waiting : BOOL
 VAR_INPUT
 END_VAR
 ]]></Declaration>
@@ -94,16 +221,19 @@ END_VAR
       </Implementation>
     </Method>
     <LineIds Name="StateMachine">
+      <LineId Id="53" Count="1" />
+      <LineId Id="46" Count="1" />
       <LineId Id="9" Count="0" />
       <LineId Id="13" Count="0" />
       <LineId Id="11" Count="0" />
       <LineId Id="20" Count="0" />
+      <LineId Id="37" Count="3" />
+      <LineId Id="48" Count="0" />
       <LineId Id="10" Count="0" />
       <LineId Id="21" Count="0" />
       <LineId Id="12" Count="0" />
       <LineId Id="22" Count="0" />
-      <LineId Id="14" Count="0" />
-      <LineId Id="23" Count="0" />
+      <LineId Id="49" Count="0" />
       <LineId Id="15" Count="0" />
       <LineId Id="24" Count="0" />
       <LineId Id="16" Count="0" />
@@ -111,13 +241,36 @@ END_VAR
       <LineId Id="25" Count="0" />
       <LineId Id="17" Count="0" />
     </LineIds>
+    <LineIds Name="StateMachine.Boot">
+      <LineId Id="6" Count="1" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="10" Count="0" />
+    </LineIds>
     <LineIds Name="StateMachine.Busy">
       <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="StateMachine.ChangeState">
       <LineId Id="5" Count="0" />
     </LineIds>
+    <LineIds Name="StateMachine.Done">
+      <LineId Id="6" Count="3" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="StateMachine.EndWait">
+      <LineId Id="6" Count="3" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
     <LineIds Name="StateMachine.Error">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="StateMachine.Execute">
+      <LineId Id="6" Count="3" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="StateMachine.Fault">
+      <LineId Id="6" Count="3" />
       <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="StateMachine.Idle">
@@ -126,7 +279,24 @@ END_VAR
     <LineIds Name="StateMachine.Init">
       <LineId Id="5" Count="0" />
     </LineIds>
+    <LineIds Name="StateMachine.Prepare">
+      <LineId Id="7" Count="0" />
+    </LineIds>
     <LineIds Name="StateMachine.Ready">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="StateMachine.Reset">
+      <LineId Id="6" Count="3" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="StateMachine.Start">
+      <LineId Id="6" Count="1" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="8" Count="0" />
+    </LineIds>
+    <LineIds Name="StateMachine.Wait">
+      <LineId Id="6" Count="3" />
       <LineId Id="5" Count="0" />
     </LineIds>
     <LineIds Name="StateMachine.Waiting">
