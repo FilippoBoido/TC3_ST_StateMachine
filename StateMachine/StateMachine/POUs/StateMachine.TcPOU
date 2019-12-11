@@ -8,14 +8,14 @@ VAR_OUTPUT
 	sStateMachine : STRING;
 END_VAR
 VAR
-	{attribute 'hide'} 
+	
 	eStateMachine : E_StateMachine;
 	stStateMachine : ST_StateMachine;
 	bFirstCycle : BOOL := TRUE;
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[sStateMachine := TO_STRING(eStateMachine);
+      <ST><![CDATA[//sStateMachine := TO_STRING(eStateMachine);
 
 Boot();
 

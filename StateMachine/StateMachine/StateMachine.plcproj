@@ -15,6 +15,10 @@
     <Implicit_KindOfTask>{ef2165ec-52d4-4f87-b3b0-62da269d575f}</Implicit_KindOfTask>
     <Implicit_Jitter_Distribution>{28f53901-f711-445e-b7fc-78b267e5c39b}</Implicit_Jitter_Distribution>
     <LibraryReferences>{9b579b79-d69d-4e2b-84d0-ca8ae752c063}</LibraryReferences>
+    <Company>FactoryAutomation</Company>
+    <Released>false</Released>
+    <Title>StateMachineLib</Title>
+    <ProjectVersion>1.0.0.1</ProjectVersion>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="DUTs\E_StateMachine.TcDUT">
