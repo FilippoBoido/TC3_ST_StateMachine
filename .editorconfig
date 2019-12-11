@@ -4,8 +4,8 @@ root = true
 end_of_line = lf
 insert_final_newline = true
 
-# Matches multiple files with brace expansion notation
-[*.{js,jsx,html,sass,txt}]
+
+
 charset = utf-8
 indent_style = tab
 indent_size = 4
