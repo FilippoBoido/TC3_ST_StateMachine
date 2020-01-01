@@ -18,7 +18,8 @@
     <Company>FactoryAutomation</Company>
     <Released>false</Released>
     <Title>StateMachineLib</Title>
-    <ProjectVersion>1.0.0.1</ProjectVersion>
+    <ProjectVersion>1.0.1.2</ProjectVersion>
+    <Author>Filippo Boido</Author>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="DUTs\E_StateMachine.TcDUT">
@@ -62,11 +63,38 @@
       <DefaultResolution>Tc3_Module, * (Beckhoff Automation GmbH)</DefaultResolution>
       <Namespace>Tc3_Module</Namespace>
     </PlaceholderReference>
+    <PlaceholderReference Include="VersionLib">
+      <DefaultResolution>VersionLib, * (FactoryAutomation)</DefaultResolution>
+      <Namespace>VersionLib</Namespace>
+      <Parameters>
+        <Parameter>
+          <Key>MAJOR</Key>
+          <Value>1</Value>
+        </Parameter>
+        <Parameter>
+          <Key>MINOR</Key>
+          <Value>0</Value>
+        </Parameter>
+        <Parameter>
+          <Key>REVISION</Key>
+          <Value>1</Value>
+        </Parameter>
+        <Parameter>
+          <Key>BUILD</Key>
+          <Value>2</Value>
+        </Parameter>
+      </Parameters>
+    </PlaceholderReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="StateMachine.tmc">
       <SubType>Content</SubType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Version.txt">
+      <SubType>Content</SubType>
+    </Content>
   </ItemGroup>
   <ProjectExtensions>
     <PlcProjectOptions>
