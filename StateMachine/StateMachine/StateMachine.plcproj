@@ -18,7 +18,7 @@
     <Company>FactoryAutomation</Company>
     <Released>false</Released>
     <Title>StateMachineLib</Title>
-    <ProjectVersion>1.0.1.2</ProjectVersion>
+    <ProjectVersion>1.0.1.1</ProjectVersion>
     <Author>Filippo Boido</Author>
   </PropertyGroup>
   <ItemGroup>
@@ -81,7 +81,7 @@
         </Parameter>
         <Parameter>
           <Key>BUILD</Key>
-          <Value>2</Value>
+          <Value>1</Value>
         </Parameter>
       </Parameters>
     </PlaceholderReference>
