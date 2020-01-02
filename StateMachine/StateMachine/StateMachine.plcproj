@@ -18,7 +18,7 @@
     <Company>FactoryAutomation</Company>
     <Released>false</Released>
     <Title>StateMachineLib</Title>
-    <ProjectVersion>1.0.1.1</ProjectVersion>
+    <ProjectVersion>1.0.2.2</ProjectVersion>
     <Author>Filippo Boido</Author>
   </PropertyGroup>
   <ItemGroup>
@@ -41,6 +41,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\TestFB.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Version.TcPOU">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -77,7 +80,7 @@
         </Parameter>
         <Parameter>
           <Key>REVISION</Key>
-          <Value>1</Value>
+          <Value>2</Value>
         </Parameter>
         <Parameter>
           <Key>BUILD</Key>
@@ -90,11 +93,6 @@
     <None Include="StateMachine.tmc">
       <SubType>Content</SubType>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Version.txt">
-      <SubType>Content</SubType>
-    </Content>
   </ItemGroup>
   <ProjectExtensions>
     <PlcProjectOptions>
